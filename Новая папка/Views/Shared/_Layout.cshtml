@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>@ViewData["Title"] — Мои финансы</title>
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+<header class="topbar">
+    <a class="brand" asp-controller="Home" asp-action="Index">₽ Мои финансы</a>
+    <nav>
+        @if (User.Identity?.IsAuthenticated == true)
+        {
+            <a asp-controller="Home" asp-action="Index">Обзор</a>
+            <a asp-controller="Transactions" asp-action="Index">Операции</a>
+            <a asp-controller="ChangeRequests" asp-action="Index">Запросы</a>
+            <span class="who">@User.Identity.Name · @User.FindFirst(System.Security.Claims.ClaimTypes.Role)?.Value</span>
+            <form asp-controller="Account" asp-action="Logout" method="post" class="inline">
+                <button class="linkbtn">Выйти</button>
+            </form>
+        }
+        else
+        {
+            <a asp-controller="Account" asp-action="Login">Вход</a>
+            <a asp-controller="Account" asp-action="Register">Регистрация</a>
+        }
+    </nav>
+</header>
+<main class="container">
+    @if (TempData["Success"] != null) { <div class="success">@TempData["Success"]</div> }
+    @RenderBody()
+</main>
+<footer>Учёт личных расходов · ASP.NET Core + PostgreSQL</footer>
+</body>
+</html>

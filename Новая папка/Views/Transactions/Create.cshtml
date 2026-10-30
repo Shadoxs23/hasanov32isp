@@ -1,0 +1,19 @@
+@model TransactionVm
+@{ ViewData["Title"] = Model.Id == null ? "Новая операция" : "Изменение операции"; }
+<div class="panel formpanel">
+<h1>@ViewData["Title"]</h1>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" asp-for="Id" />
+    <div asp-validation-summary="All" class="error"></div>
+    <label asp-for="Type">Тип операции</label>
+    <select asp-for="Type"><option value="expense">Расход</option><option value="income">Доход</option></select>
+    <label asp-for="Amount">Сумма</label><input asp-for="Amount" type="number" min="0.01" step="0.01" />
+    <label asp-for="CategoryId">Категория</label><select asp-for="CategoryId" asp-items="ViewBag.Categories"><option value="">Выберите категорию</option></select>
+    <label asp-for="PaymentMethodId">Способ оплаты</label><select asp-for="PaymentMethodId" asp-items="ViewBag.PaymentMethods"><option value="">Выберите способ оплаты</option></select>
+    <label asp-for="TransactionDate">Дата</label><input asp-for="TransactionDate" type="date" />
+    <label asp-for="Description">Описание</label><textarea asp-for="Description"></textarea>
+    <button class="button">Сохранить</button>
+    <a asp-action="Index" class="cancel">Отмена</a>
+</form>
+</div>

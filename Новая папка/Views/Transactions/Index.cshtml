@@ -1,0 +1,37 @@
+@model List<Transaction>
+@{ ViewData["Title"] = "Операции"; }
+<div class="heading"><h1>Финансовые операции</h1><a class="button" asp-action="Create">+ Добавить</a></div>
+<form method="get" class="filters">
+    <input name="search" value="@ViewBag.Search" placeholder="Поиск по описанию или категории" />
+    <select name="type">
+        <option value="">Все типы</option>
+        <option value="income" selected="@(ViewBag.Type == "income")">Доход</option>
+        <option value="expense" selected="@(ViewBag.Type == "expense")">Расход</option>
+    </select>
+    <input type="date" name="from" value="@ViewBag.From" />
+    <input type="date" name="to" value="@ViewBag.To" />
+    <button class="button secondary">Найти</button>
+</form>
+<div class="panel tablewrap"><table>
+<thead><tr><th>Дата</th><th>Пользователь</th><th>Тип</th><th>Категория</th><th>Способ оплаты</th><th>Сумма</th><th>Описание</th><th></th></tr></thead>
+<tbody>
+@foreach (var t in Model)
+{
+<tr>
+<td>@t.TransactionDate.ToString("dd.MM.yyyy")</td>
+<td>@t.User?.FullName</td>
+<td>@(t.Type == "income" ? "Доход" : "Расход")</td>
+<td>@t.Category?.Name</td><td>@t.PaymentMethod?.Name</td>
+<td>@t.Amount.ToString("N2") ₽</td><td>@t.Description</td>
+<td class="actions">
+<a asp-action="Edit" asp-route-id="@t.Id">Изменить</a>
+<form asp-action="Delete" method="post" onsubmit="return confirm('Удалить операцию?')">
+    @Html.AntiForgeryToken()<input type="hidden" name="id" value="@t.Id" />
+    <button class="danger-link">Удалить</button>
+</form>
+</td>
+</tr>
+}
+</tbody></table>
+@if (!Model.Any()) { <p class="muted">Операций пока нет.</p> }
+</div>

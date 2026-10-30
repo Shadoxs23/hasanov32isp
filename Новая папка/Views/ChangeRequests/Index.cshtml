@@ -1,0 +1,20 @@
+@model List<ChangeRequest>
+@{ ViewData["Title"] = "Запросы на изменение"; }
+<h1>Запросы на изменение операций</h1>
+<div class="panel tablewrap"><table>
+<thead><tr><th>ID</th><th>Операция</th><th>Пользователь</th><th>Текст запроса</th><th>Статус</th><th>Создан</th><th>Действия</th></tr></thead>
+<tbody>
+@foreach (var r in Model)
+{
+<tr><td>@r.Id</td><td>@r.TransactionId</td><td>@r.UserId</td><td>@r.RequestText</td><td>@r.Status</td><td>@r.CreatedAt.ToLocalTime().ToString("dd.MM.yyyy HH:mm")</td>
+<td>
+@if ((User.IsInRole(RoleNames.Admin) || User.IsInRole(RoleNames.Manager)) && r.Status == "pending")
+{
+<form asp-action="Review" method="post" class="inline">@Html.AntiForgeryToken()<input type="hidden" name="id" value="@r.Id" /><input type="hidden" name="decision" value="approved" /><button class="smallbtn">Одобрить</button></form>
+<form asp-action="Review" method="post" class="inline">@Html.AntiForgeryToken()<input type="hidden" name="id" value="@r.Id" /><input type="hidden" name="decision" value="rejected" /><button class="smallbtn reject">Отклонить</button></form>
+}
+</td></tr>
+}
+</tbody></table>
+@if (!Model.Any()) { <p class="muted">Запросов пока нет.</p> }
+</div>

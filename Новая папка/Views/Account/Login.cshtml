@@ -1,0 +1,17 @@
+@model LoginVm
+@{ ViewData["Title"] = "Вход"; }
+<div class="auth panel">
+<h1>Вход в систему</h1>
+<form method="post">
+    @Html.AntiForgeryToken()
+    <div asp-validation-summary="ModelOnly" class="error"></div>
+    <label asp-for="Email">Электронная почта</label>
+    <input asp-for="Email" />
+    <span asp-validation-for="Email" class="error"></span>
+    <label asp-for="Password">Пароль</label>
+    <input asp-for="Password" />
+    <span asp-validation-for="Password" class="error"></span>
+    <button class="button" type="submit">Войти</button>
+</form>
+<p>Нет аккаунта? <a asp-action="Register">Зарегистрироваться</a></p>
+</div>

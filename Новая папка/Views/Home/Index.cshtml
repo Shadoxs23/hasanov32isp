@@ -1,0 +1,14 @@
+@{ ViewData["Title"] = "Главная"; }
+<h1>Добро пожаловать, @User.Identity?.Name!</h1>
+<p class="muted">Ваши финансы в одном месте.</p>
+<div class="cards">
+    <section class="stat"><span>Доходы</span><strong class="green">@(((decimal)ViewBag.Income).ToString("N2")) ₽</strong></section>
+    <section class="stat"><span>Расходы</span><strong class="red">@(((decimal)ViewBag.Expense).ToString("N2")) ₽</strong></section>
+    <section class="stat"><span>Баланс</span><strong>@(((decimal)ViewBag.Balance).ToString("N2")) ₽</strong></section>
+    <section class="stat"><span>Операций</span><strong>@ViewBag.Count</strong></section>
+</div>
+<div class="panel">
+    <h2>Быстрые действия</h2>
+    <a class="button" asp-controller="Transactions" asp-action="Create">Добавить операцию</a>
+    <a class="button secondary" asp-controller="Transactions" asp-action="Index">Посмотреть операции</a>
+</div>
